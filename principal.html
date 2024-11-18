@@ -1,0 +1,391 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <title>Agencia de Viajes</title>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="stylesheet" href="bootstrap/css/bootstrap.min.css" />
+    <script src="bootstrap/js/jquery.min.js"></script>
+    <script src="bootstrap/js/bootstrap.min.js"></script>
+    <style type="text/css">
+      body {
+        margin-left: 10px;
+      }
+
+      form {
+        display: none;
+      }
+
+      #formularios {
+        margin-top: 60px;
+      }
+    </style>
+  </head>
+
+  <body>
+    <nav class="navbar navbar-default navbar-fixed-top">
+      <div class="container-fluid">
+        <div class="navbar-header">
+          <a class="navbar-brand" href="#"><b>GESTIÓN DE RESERVAS José Carlos</b></a>
+        </div>
+        <ul class="nav navbar-nav">
+          <li>
+            <a href="#" onclick="gestionFormularios('frmAltas');">ALTAS</a>
+          </li>
+          <li>
+            <a href="#" onclick="gestionFormularios('frmBajaReserva');">Cancelación de Reservas</a>
+          </li>
+          <li>
+            <a href="#" onclick="gestionFormularios('frmListas');">Listas de Clientes y Listas de Alojamiento</a>
+          </li>
+          <li>
+            <a href="#" onclick="gestionFormularios('frmListaSegunCliente');">Lista de Reservas según Cliente</a>
+          </li>
+          <li>
+            <a href="#" onclick="gestionFormularios('frmListaReservaEntreDosFechas');">Reservas entre dos fechas</a>
+          </li>
+          <li>
+            <a href="#" onclick="gestionFormularios('frmListaHabitacionesConDesayuno');">Lista de Habitaciones con Desayuno </a>
+          </li>
+        </ul>
+      </div>
+    </nav>
+
+    <div class="container-fluid" id="formularios">
+
+
+      <!-- ALTAS -->
+      <form class="form-horizontal" name="frmAltas" id="frmAltas">
+        <fieldset>
+          <!-- Formulario de alta de cliente -->
+          <legend>Alta de Cliente</legend>
+          
+          <!-- Campo DNI -->
+          <div class="form-group">
+            <label class="col-xs-4 control-label" for="txtDni">DNI</label>
+            <div class="col-xs-4">
+              <input id="txtDni" name="txtDni" placeholder="DNI" class="form-control input-md" type="text" />
+            </div>
+          </div>
+          
+          <!-- Campo Nombre -->
+          <div class="form-group">
+            <label class="col-xs-4 control-label" for="txtNombre">Nombre</label>
+            <div class="col-xs-4">
+              <input id="txtNombre" name="txtNombre" placeholder="Nombre" class="form-control input-md" type="text" />
+            </div>
+          </div>
+          
+          <!-- Campo Apellidos -->
+          <div class="form-group">
+            <label class="col-xs-4 control-label" for="txtApellidos">Apellidos</label>
+            <div class="col-xs-4">
+              <input id="txtApellidos" name="txtApellidos" placeholder="Apellidos" class="form-control input-md" type="text" />
+            </div>
+          </div>
+          
+          <!-- Botón Aceptar Alta Cliente -->
+          <div class="form-group">
+            <div class="col-xs-offset-4 col-xs-4">
+              <input type="button" id="btnAceptarAltaCliente" name="btnAceptarAltaCliente" class="btn btn-primary" value="Aceptar" onclick="aceptarAltaCliente();" />
+            </div>
+          </div>
+          
+        </fieldset>
+        
+        <!-- Formulario de alta de alojamientos -->
+        <fieldset>
+          <legend>Alta de Alojamientos</legend>
+
+          <!-- Campo ID Alojamiento -->
+          <div class="form-group">
+            <label class="col-xs-4 control-label" for="txtIdAlojamiento">ID ALOJAMINETO</label>
+            <div class="col-xs-4">
+              <input id="txtIdAlojamiento" name="txtIdAlojamiento" placeholder="ID ALOJAMIENTO" class="form-control input-md" type="text" />
+            </div>
+          </div>
+          
+          <!-- Campo Número de Personas -->
+          <div class="form-group">
+            <label class="col-xs-4 control-label" for="txtNumPersonas">Número de Personas</label>
+            <div class="col-xs-4">
+              <input id="txtNumPersonas" name="txtNumPersonas" placeholder="Número de personas" class="form-control input-md" type="text" />
+            </div>
+          </div>
+          
+          <!-- Selección Tipo de Alojamiento -->
+          <div class="form-group">
+            <label class="col-xs-4 control-label">Seleccione el tipo de alojamiento:</label>
+            <div class="col-xs-4">
+              <label class="radio-inline">
+                <input type="radio" name="tipoAlojamiento" value="Habitacion" onclick="mostrarHabitacionApartamento()" checked> Habitación
+              </label>
+              <label class="radio-inline">
+                <input type="radio" name="tipoAlojamiento" value="Apartamento" onclick="mostrarHabitacionApartamento()"> Apartamento
+              </label>
+            </div>
+          </div>
+          
+          
+          
+          <!-- Campos específicos para Habitación -->
+          <div id="habitacion" style="display: block;">
+            <div class="form-group">
+              <label class="col-xs-4 control-label" for="boolDesayuno">Desayuno Incluido</label>
+              <div class="col-xs-4">
+                <select id="boolDesayuno" name="boolDesayuno" class="form-control">
+                  <option value="si">Sí</option>
+                  <option value="no">No</option>
+                </select>
+              </div>
+            </div>
+          </div>
+          
+          <!-- Campos específicos para Apartamento -->
+          <div id="apartamento" style="display: none;">
+            <div class="form-group">
+              <label class="col-xs-4 control-label" for="numDormitorios">Número de Dormitorios</label>
+              <div class="col-xs-4">
+                <input type="number" id="numDormitorios" name="numDormitorios" class="form-control" placeholder="Número de Dormitorios" />
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="col-xs-4 control-label" for="boolParking">Parking</label>
+              <div class="col-xs-4">
+                <select id="boolParking" name="boolParking" class="form-control">
+                  <option value="si">Sí</option>
+                  <option value="no">No</option>
+                </select>
+              </div>
+            </div>
+          </div>
+          
+          <!-- Botón para Dar de Alta el Alojamiento -->
+          <div class="form-group">
+            <div class="col-xs-offset-4 col-xs-4">
+              <input type="button" id="btnAltaAlojamiento" name="btnAltaAlojamiento" class="btn btn-primary" value="Dar de Alta el Alojamiento" onclick="altaAlojamiento();" />
+            </div>
+          </div>
+        </fieldset>
+
+        <fieldset>
+          <!-- Alta de Reservas -->
+          <legend>Alta de Reservas</legend>
+
+          <!-- Campo ID RESERVA -->
+          <div class="form-group">
+            <label class="col-xs-4 control-label" for="txtIdReserva">ID RESERVA</label>
+            <div class="col-xs-4">
+              <input id="txtIdReserva" name="txtIdReserva" placeholder="ID RESERVA" class="form-control input-md" type="text" />
+            </div>
+          </div>
+
+          <!-- Campo ID CLIENTE -->
+          <div class="form-group">
+            <label class="col-xs-4 control-label" for="txtDniCliente">DNI CLIENTE</label>
+            <div class="col-xs-4">
+              <input id="txtDniCliente" name="txtDniCliente" placeholder="DNI CLIENTE" class="form-control input-md" type="text" />
+            </div>
+          </div>
+
+          <!-- Campo ID ALOJAMINETO -->
+          <div class="form-group">
+            <label class="col-xs-4 control-label" for="txtIdAlojamientoEnReserva">ID ALOJAMINETO</label>
+            <div class="col-xs-4">
+              <input id="txtIdAlojamientoEnReserva" name="txtIdAlojamientoEnReserva" placeholder="ID ALOJAMINETO" class="form-control input-md" type="text" />
+            </div>
+          </div>
+
+          <!-- Campo FECHAS -->
+          <div class="form-group">
+            <label for="fechaInicio">Fecha de inicio:</label>
+            <input type="date" id="fechaInicio" name="fechaInicio" class="form-control" required>
+          </div>
+      
+          <div class="form-group">
+            <label for="fechaFin">Fecha de fin:</label>
+            <input type="date" id="fechaFin" name="fechaFin" class="form-control" required>
+          </div>
+
+          <div class="form-group">
+            <div class="col-xs-offset-4 col-xs-4">
+              <input type="button" id="btnAltaReserva" name="btnAltaReserva" class="btn btn-primary" value="RESERVAR" onclick="altaReserva();" />
+            </div>
+          </div>
+
+        </fieldset>
+      </form>
+
+      <form class="form-horizontal" name="frmBajaReserva" id="frmBajaReserva">
+        <fieldset>
+          <!-- Formulario de Reservas por cliente -->
+          <legend>CANCELACIÓN DE RESERVAS</legend>
+          <br>
+          <!-- Campo DNI Cliente -->
+          <div class="form-group">
+            <label class="col-xs-4 control-label" for="txtIDParaCancelacionReserva">INTRODUCE EL ID DE LA RESERVA</label>
+            <div class="col-xs-4">
+              <input id="txtIDParaCancelacionReserva" name="txtIDParaCancelacionReserva" placeholder="ID DE LA RESERVA" class="form-control input-md" type="text" />
+            </div>
+          </div>
+
+          <p id="tipoTablaCancelacionReserva"></p>
+          <div id="tablaCancelacionReserva"></div>
+
+          <!-- Button -->
+          <div class="form-group">
+            <label class="col-xs-4 control-label" for="btnCancelarReserva"></label>
+            <div class="col-xs-4">
+              <input
+                type="button"
+                id="btnCancelarReserva"
+                name="btnCancelarReserva"
+                class="btn btn-primary"
+                value="Cancelar Reserva"
+                onclick="cancelarReserva();"
+              />
+            </div>
+          </div>
+        </fieldset>
+      </form>
+
+
+        <!-- LISTADOS CLIENTES / ALOJAMIENTOS -->
+      <form class="form-horizontal" name="frmListas" id="frmListas">
+        <fieldset>
+          <!-- Form Name -->
+          <legend>Listados</legend>
+
+          <!-- Text input-->
+          <div class="form-group">
+
+            <label class="col-xs-4 control-label">Ver listas: </label>
+
+            <div class="col-xs-4">
+              <label class="radio-inline">
+                <input type="radio" name="listaSeleccionada" value="listaAlojamientos"> Lista de Alojamientos
+              </label>
+              <label class="radio-inline">            
+                <input type="radio" name="listaSeleccionada" value="listaClientes"> Lista de Clientes
+              </label>
+              <label class="radio-inline">            
+                <input type="radio" name="listaSeleccionada" value="listaReservas"> Lista de Reservas
+              </label>
+            </div>
+          </div>
+          <p id="tipoTabla"></p>
+          <div id="tabla"></div>
+
+          <!-- Button -->
+          <div class="form-group">
+            <label class="col-xs-4 control-label" for="btnMostrarListaSeleccionada"></label>
+            <div class="col-xs-4">
+              <input
+                type="button"
+                id="btnMostrarListaSeleccionada"
+                name="btnMostrarListaSeleccionada"
+                class="btn btn-primary"
+                value="Mostrar Lista"
+                onclick="mostrarListaSeleccionada();"
+              />
+            </div>
+          </div>
+        </fieldset>
+      </form>
+
+      <form class="form-horizontal" name="frmListaSegunCliente" id="frmListaSegunCliente">
+        <fieldset>
+          <!-- Formulario de Reservas por cliente -->
+          <legend>Lista de Reservas por Clientes</legend>
+          <br>
+          <!-- Campo DNI Cliente -->
+          <div class="form-group">
+            <label class="col-xs-4 control-label" for="txtDniParaReservaPorCliente">INTRODUCE EL DNI DEL CLIENTE</label>
+            <div class="col-xs-4">
+              <input id="txtDniParaReservaPorCliente" name="txtDniParaReservaPorCliente" placeholder="DNI DEL CLIENTE" class="form-control input-md" type="text" />
+            </div>
+          </div>
+
+          <p id="tipoTablaReservaPorCliente"></p>
+          <div id="tablaReservaPorCliente"></div>
+
+          <!-- Button -->
+          <div class="form-group">
+            <label class="col-xs-4 control-label" for="btnMostrarListaReservaPorCliente"></label>
+            <div class="col-xs-4">
+              <input
+                type="button"
+                id="btnMostrarListaReservaPorCliente"
+                name="btnMostrarListaReservaPorCliente"
+                class="btn btn-primary"
+                value="Mostrar Lista"
+                onclick="mostrarListaReservaPorClientes();"
+              />
+            </div>
+          </div>
+        </fieldset>
+      </form>
+
+
+
+      <form class="form-horizontal" name="frmListaHabitacionesConDesayuno" id="frmListaHabitacionesConDesayuno">
+        <fieldset>
+          <!-- Formulario de Habitaciones con Desayuno -->
+          <legend>Lista de Habitaciones con Desayuno</legend>
+          <br>
+  
+          <p id="tipoTablaHabitacionesConDesayuno"></p>
+          <div id="tablaHabitacionesConDesayuno"></div>
+
+          <!-- Button -->
+          <div class="form-group">
+            <label class="col-xs-4 control-label" for="btnMostrarListaReservaPorCliente"></label>
+            <div class="col-xs-4">
+              <input
+                type="button"
+                id="btnMostrarListaHabitacionesConDesayuno"
+                name="btnMostrarListaHabitacionesConDesayuno"
+                class="btn btn-primary"
+                value="Mostrar Lista"
+                onclick="MostrarListaHabitacionesConDesayuno();"
+              />
+            </div>
+          </div>
+        </fieldset>
+      </form>
+        <!-- Formulario Reservas entre dos Fechas -->
+      <form class="form-horizontal" name="frmListaReservaEntreDosFechas" id="frmListaReservaEntreDosFechas">
+        <fieldset>
+            <legend>Reservas entre dos Fechas</legend>
+    
+            <div class="form-group">
+                <label for="fechaInicioReserva">Fecha de inicio Reserva: </label>
+                <input type="date" id="fechaInicioReserva" name="fechaInicioReserva" class="form-control" required>
+            </div>
+    
+            <div class="form-group">
+                <label for="fechaFinReserva">Fecha de fin: </label>
+                <input type="date" id="fechaFinReserva" name="fechaFinReserva" class="form-control" required>
+            </div>
+    
+            <div class="form-group">
+                <div class="col-xs-offset-4 col-xs-4">
+                <input type="button" id="btnReservaEntreDosFechas" name="btnReservaEntreDosFechas" class="btn btn-primary" value="VER RESERVAS" onclick="reservaEntreDosFechas();" />
+                </div>
+            </div>
+            <br>
+            <p id="tipoTablaReservaEntreFechas"></p>
+          <div id="tablaReservaEntreFechas"></div>
+        </fieldset>
+    </form>
+
+
+
+
+
+      
+    </div>
+    <script src="js/objetos.js"></script>
+    <script src="js/codigo.js"></script>
+  </body>
+</html>
